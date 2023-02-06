@@ -12,6 +12,7 @@
   ],
   "dependencies": {
     "@portis/web3": "3.0.10",
+    "@safe-global/account-abstraction-auth": "file:.yalc/@safe-global/account-abstraction-auth",
     "@walletconnect/web3-provider": "^1.4.1",
     "animate.css": "^3.7.0",
     "axios": "^0.21.1",
