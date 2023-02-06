@@ -8,7 +8,7 @@ import axios from 'axios'
 import { pad0x, makeBn, padRight, isHex, cloverIsMonochrome } from '@/utils'
 import CloverWorker from 'worker-loader!../assets/clover-worker'
 import confetti from 'canvas-confetti'
-import { SafeAuth } from '@safe-global/account-abstraction-auth'
+import * as AA from '@safe-global/account-abstraction-auth'
 
 window.contracts = contracts
 
