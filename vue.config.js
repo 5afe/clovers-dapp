@@ -16,11 +16,12 @@ module.exports = {
   configureWebpack: {
     optimization: {
       splitChunks: {
-        maxSize: 1000000,
+        chunks: 'all',
       },
     },
+    devtool: 'source-map',
     plugins: [
-      // new BundleAnalyzerPlugin(),
+      new NodePolyfillPlugin(),
       new webpack.IgnorePlugin({
         resourceRegExp: /^\.\/locale$/,
         contextRegExp: /moment$/,
@@ -33,14 +34,6 @@ module.exports = {
       alias: {
         'bn.js': path.resolve(__dirname, 'node_modules/bn.js'),
         underscore: path.resolve(__dirname, 'node_modules/underscore'),
-      },
-    },
-  },
-  configureWebpack: {
-    plugins: [new NodePolyfillPlugin()],
-    optimization: {
-      splitChunks: {
-        chunks: 'all',
       },
     },
   },
