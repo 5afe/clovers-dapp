@@ -9,6 +9,7 @@ import { pad0x, makeBn, padRight, isHex, cloverIsMonochrome } from '@/utils';
 import CloverWorker from 'worker-loader!../assets/clover-worker';
 import confetti from 'canvas-confetti';
 import * as AA from '@safe-global/account-abstraction-auth';
+import Web3 from 'web3';
 
 window.contracts = contracts;
 
@@ -594,32 +595,16 @@ export default {
         var msg = global.web3.utils.utf8ToHex(signingParams[0].value);
         var params = [msg, account];
         try {
-          global.web3.currentProvider.sendAsync(
-            {
-              jsonrpc: '2.0',
-              id: state.networkId || 1,
-              method: 'personal_sign',
-              params,
-            },
-            (err, signature) => {
-              if (err) {
-                console.log(err);
-                commit('UPDATE_WEB3', false);
-                dispatch('selfDestructMsg', {
-                  type: 'error',
-                  msg: `Could not sign in`,
-                });
-                reject(err);
-              } else {
-                dispatch('selfDestructMsg', {
-                  type: 'success',
-                  msg: `Successfully signed in`,
-                });
-                commit('SIGN_IN', { account, signature: signature.result });
-                resolve();
-              }
-            }
-          );
+          const web3 = new Web3(global.web3Connect.getProvider());
+          const fromAddress = (await web3.eth.getAccounts())[0];
+          const signedMessage = await web3.eth.personal.sign(msg, fromAddress);
+
+          dispatch('selfDestructMsg', {
+            type: 'success',
+            msg: `Successfully signed in`,
+          });
+          commit('SIGN_IN', { account, signature: signedMessage });
+          resolve();
         } catch (error) {
           console.log(error);
           commit('UPDATE_WEB3', false);
